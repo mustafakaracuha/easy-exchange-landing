@@ -2,20 +2,27 @@ import ConvertIcon from '../../assets/coonvert_icon.svg'
 import UsFlag from '../../assets/amerikan_flag.svg'
 import UkFlag from '../../assets/Uk_flag.svg'
 import ExchangeIcon from '../../assets/exchance_icon.svg'
+import EuFlag from '../../assets/eur_flag.svg'
 
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useEffect, useRef } from 'react'
 
-type Currency = 'USD' | 'GBP'
+type Currency = 'USD' | 'GBP' | 'EUR'
 
 const rates: Record<Currency, number> = {
   USD: 1,
   GBP: 0.787962, // 1 USD -> 0.787962 GBP (örnek)
+  EUR: 0.898649, // 1 USD -> 0.898649 EUR (örnek)
 }
 
 const ConvertFund = () => {
   const [amount, setAmount] = useState<number>(10)
   const [from, setFrom] = useState<Currency>('USD')
   const [to, setTo] = useState<Currency>('GBP')
+  const [showFromDropdown, setShowFromDropdown] = useState(false)
+  const [showToDropdown, setShowToDropdown] = useState(false)
+
+  const fromDropdownRef = useRef<HTMLDivElement>(null)
+  const toDropdownRef = useRef<HTMLDivElement>(null)
 
   const result = useMemo(() => {
     if (from === to) return amount
@@ -27,6 +34,34 @@ const ConvertFund = () => {
     setFrom(to)
     setTo(from)
   }
+
+  const currencies = [
+    { code: 'USD', name: 'US Dollar', flag: UsFlag },
+    { code: 'GBP', name: 'British Pound', flag: UkFlag },
+    { code: 'EUR', name: 'Euro', flag: EuFlag },
+  ]
+
+  const getFlag = (currency: Currency) => {
+    return currency === 'USD' ? UsFlag : currency === 'GBP' ? UkFlag : EuFlag
+  }
+
+  const getCurrencyName = (currency: Currency) => {
+    return currency === 'USD' ? 'US Dollar' : currency === 'GBP' ? 'British Pound' : 'Euro'
+  }
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (fromDropdownRef.current && !fromDropdownRef.current.contains(event.target as Node)) {
+        setShowFromDropdown(false)
+      }
+      if (toDropdownRef.current && !toDropdownRef.current.contains(event.target as Node)) {
+        setShowToDropdown(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   return (
     <section className="w-full bg-white">
@@ -48,18 +83,40 @@ const ConvertFund = () => {
             />
           </div>
 
-          <div>
+          <div ref={fromDropdownRef}>
             <label className="block text-slate-600 text-lg font-semibold mb-2">From</label>
             <div className="relative">
-              <select
-                value={from}
-                onChange={(e) => setFrom(e.target.value as Currency)}
-                className="w-full appearance-none rounded-lg border border-lime-600 px-10 py-3 pr-10 outline-none focus:ring-2 focus:ring-lime-400"
+              <button
+                onClick={() => setShowFromDropdown(!showFromDropdown)}
+                className="w-full flex items-center gap-3 rounded-lg border border-lime-600 px-4 py-3 bg-white outline-none focus:ring-2 focus:ring-lime-400"
               >
-                <option value="USD">USD - US Dollar</option>
-                <option value="GBP">GBP - British Pound</option>
-              </select>
-              <img src={UsFlag} alt="flag" className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 w-6 h-6" />
+                <img src={getFlag(from)} alt="flag" className="w-8 h-8 rounded-full object-cover" />
+                <span className="flex-1 text-left font-medium text-slate-700">
+                  {from} - {getCurrencyName(from)}
+                </span>
+                <svg className={`w-5 h-5 transition-transform ${showFromDropdown ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {showFromDropdown && (
+                <div className="absolute z-10 mt-2 w-full bg-white border border-slate-200 rounded-lg shadow-lg overflow-hidden">
+                  {currencies.map((currency) => (
+                    <button
+                      key={currency.code}
+                      onClick={() => {
+                        setFrom(currency.code as Currency)
+                        setShowFromDropdown(false)
+                      }}
+                      className="w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-50 transition-colors"
+                    >
+                      <img src={currency.flag} alt={currency.name} className="w-8 h-8 rounded-full object-cover" />
+                      <span className="font-medium text-slate-700">
+                        {currency.code} - {currency.name}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
@@ -67,18 +124,40 @@ const ConvertFund = () => {
             <img src={ExchangeIcon} alt="swap" className="w-12 h-12" />
           </button>
 
-          <div>
+          <div ref={toDropdownRef}>
             <label className="block text-slate-600 text-lg font-semibold mb-2">To</label>
             <div className="relative">
-              <select
-                value={to}
-                onChange={(e) => setTo(e.target.value as Currency)}
-                className="w-full appearance-none rounded-lg border border-lime-600 px-10 py-3 pr-10 outline-none focus:ring-2 focus:ring-lime-400"
+              <button
+                onClick={() => setShowToDropdown(!showToDropdown)}
+                className="w-full flex items-center gap-3 rounded-lg border border-lime-600 px-4 py-3 bg-white outline-none focus:ring-2 focus:ring-lime-400"
               >
-                <option value="GBP">GBP - British Pound</option>
-                <option value="USD">USD - US Dollar</option>
-              </select>
-              <img src={UkFlag} alt="flag" className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 w-6 h-6" />
+                <img src={getFlag(to)} alt="flag" className="w-8 h-8 rounded-full object-cover" />
+                <span className="flex-1 text-left font-medium text-slate-700">
+                  {to} - {getCurrencyName(to)}
+                </span>
+                <svg className={`w-5 h-5 transition-transform ${showToDropdown ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {showToDropdown && (
+                <div className="absolute z-10 mt-2 w-full bg-white border border-slate-200 rounded-lg shadow-lg overflow-hidden">
+                  {currencies.map((currency) => (
+                    <button
+                      key={currency.code}
+                      onClick={() => {
+                        setTo(currency.code as Currency)
+                        setShowToDropdown(false)
+                      }}
+                      className="w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-50 transition-colors"
+                    >
+                      <img src={currency.flag} alt={currency.name} className="w-8 h-8 rounded-full object-cover" />
+                      <span className="font-medium text-slate-700">
+                        {currency.code} - {currency.name}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -91,10 +170,10 @@ const ConvertFund = () => {
 
         <div className="mt-12">
           <p className="text-4xl md:text-3xl font-extrabold text-gray-400">
-            {amount.toFixed(2)} {from === 'USD' ? 'US Dollars' : 'British Pounds'} =
+            {amount.toFixed(2)} {from === 'USD' ? 'US Dollars' : from === 'GBP' ? 'British Pounds' : 'Euros'} =
           </p>
           <p className="mt-4 text-3xl md:text-5xl font-extrabold text-slate-700">
-            {result} {to === 'USD' ? 'US Dollars' : 'British Pounds'}
+            {result} {to === 'USD' ? 'US Dollars' : to === 'GBP' ? 'British Pounds' : 'Euros'}
           </p>
           <p className="mt-4 text-slate-400 leading-relaxed text-2xl font-medium">
             1 USD = {rates.GBP} GBP
@@ -107,5 +186,3 @@ const ConvertFund = () => {
 }
 
 export default ConvertFund
-
-
