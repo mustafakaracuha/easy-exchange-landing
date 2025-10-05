@@ -1,11 +1,5 @@
 import axios from 'axios'
-
-export type Currency = 'USD' | 'GBP' | 'EUR'
-
-type RatesResponse = {
-  result: 'success' | string
-  conversion_rates?: Record<string, number>
-}
+import type { Currency, RatesResponse } from '../types/exchange'
 
 export async function fetchRate(base: Currency, target: Currency): Promise<number> {
   const apiKey = import.meta.env.VITE_APP_API_KEY as string | undefined

@@ -26,12 +26,12 @@ const features = [
 const Features = () => {
   return (
     <section className="w-full bg-slate-50 mt-10">
-      <div className="max-w-7xl mx-auto px-14 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-20">
+      <div className="max-w-7xl mx-auto py-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-24">
           {features.map((f) => (
             <div
               key={f.title}
-              className="rounded-4xl bg-white shadow-xl shadow-gray-300 p-12 text-center"
+              className="rounded-4xl bg-white shadow-xl hover:shadow-2xl transition-shadow duration-300 hover:shadow-gray-400 shadow-gray-300 px-14 p-12 text-center"
             >
               <img src={f.icon} alt={f.title} className="mx-auto w-50 h-50" />
               <h3 className="mt-6 text-2xl font-extrabold text-lime-600 tracking-wide">{f.title}</h3>

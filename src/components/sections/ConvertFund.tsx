@@ -6,8 +6,8 @@ import EuFlag from '../../assets/flags/eu.svg'
 
 import { useState, useEffect, useRef } from 'react'
 import { fetchRate } from '../../services/exchange'
+import type { Currency } from '../../types/exchange'
 
-type Currency = 'USD' | 'GBP' | 'EUR'
 
 const ConvertFund = () => {
   const [amount, setAmount] = useState<number>(10)
