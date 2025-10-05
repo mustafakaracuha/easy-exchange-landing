@@ -1,5 +1,5 @@
-import Logo from '../../assets/logos/logo.svg'
 import { useEffect, useState } from 'react'
+import Logo from '../../assets/logos/logo.svg'
 
 type LoginModalProps = {
   open: boolean
@@ -24,9 +24,10 @@ const LoginModal = ({ open, onClose }: LoginModalProps) => {
         className={`absolute inset-0 bg-black/50 transition-opacity duration-300 ${enter ? 'opacity-100' : 'opacity-0'}`}
         onClick={onClose}
       />
-      <div className="absolute inset-0 flex items-start md:items-center justify-center p-4 pt-8">
+      <div className="absolute inset-0 flex items-start md:items-center justify-center p-4 pt-8" onClick={onClose}>
         <div
           className={`w-full max-w-md max-h-xl bg-white rounded-4xl shadow-2xl p-8 md:p-12 relative transform transition-all duration-300 ease-out ${enter ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-8'}`}
+          onClick={onClose}
         >
           <div className="flex items-center justify-center gap-3">
             <img src={Logo} alt="logo" className="w-72 h-16" />
