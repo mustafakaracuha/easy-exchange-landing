@@ -1,12 +1,10 @@
 import ConvertIcon from '../../assets/icons/convert.svg'
-import UsFlag from '../../assets/flags/us.svg'
-import UkFlag from '../../assets/flags/gb.svg'
 import ExchangeIcon from '../../assets/icons/exchange.svg'
-import EuFlag from '../../assets/flags/eu.svg'
 
 import { useState, useEffect, useRef } from 'react'
 import { fetchRate } from '../../services/exchange'
 import type { Currency } from '../../types/exchange'
+import { ALLOWED, CURRENCIES } from '../../lib/currency'
 
 
 const ConvertFund = () => {
@@ -23,6 +21,7 @@ const ConvertFund = () => {
   const fromDropdownRef = useRef<HTMLDivElement>(null)
   const toDropdownRef = useRef<HTMLDivElement>(null)
 
+
   const handleConvert = async () => {
     setError('')
     setIsLoading(true)
@@ -31,8 +30,7 @@ const ConvertFund = () => {
       if (isNaN(numericAmount) || numericAmount < 0) {
         throw new Error('Please enter a valid amount')
       }
-      const allowed: Currency[] = ['USD', 'GBP', 'EUR']
-      if (!allowed.includes(to)) {
+      if (!ALLOWED.includes(to)) {
         throw new Error('Invalid target currency')
       }
 
@@ -57,19 +55,7 @@ const ConvertFund = () => {
     setBaseToTargetRate(null)
   }
 
-  const currencies = [
-    { code: 'USD', name: 'US Dollar', flag: UsFlag },
-    { code: 'GBP', name: 'British Pound', flag: UkFlag },
-    { code: 'EUR', name: 'Euro', flag: EuFlag },
-  ]
-
-  const getFlag = (currency: Currency) => {
-    return currency === 'USD' ? UsFlag : currency === 'GBP' ? UkFlag : EuFlag
-  }
-
-  const getCurrencyName = (currency: Currency) => {
-    return currency === 'USD' ? 'US Dollar' : currency === 'GBP' ? 'British Pound' : 'Euro'
-  }
+  const currencyListLocal = ALLOWED.map((code) => ({ code, ...CURRENCIES[code] }))
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -90,7 +76,7 @@ const ConvertFund = () => {
       <div className="max-w-7xl mx-auto px-4 py-16">
         <div className="flex items-center gap-3">
           <img src={ConvertIcon} alt="convert" className="w-12 h-12" />
-          <h2 className="text-2xl md:text-2xl font-semibold text-slate-700">Convert Fund</h2>
+          <h2 className="text-2xl font-semibold text-slate-700">Convert Fund</h2>
         </div>
 
         <div className="mt-8 grid grid-cols-1 md:grid-cols-[1fr_1fr_auto_1fr_auto] items-end gap-6">
@@ -115,9 +101,9 @@ const ConvertFund = () => {
                 onClick={() => setShowFromDropdown(!showFromDropdown)}
                 className="w-full flex items-center gap-3 rounded-lg border border-lime-600 px-4 py-3 bg-white outline-none focus:ring-2 focus:ring-lime-400"
               >
-                <img src={getFlag(from)} alt="flag" className="w-8 h-8 rounded-full object-cover" />
+                <img src={CURRENCIES[from].flag} alt="flag" className="w-8 h-8 rounded-full object-cover" />
                 <span className="flex-1 text-left font-medium text-slate-700">
-                  {from} - {getCurrencyName(from)}
+                  {from} - {CURRENCIES[from].name}
                 </span>
                 <svg className={`w-5 h-5 transition-transform ${showFromDropdown ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -125,7 +111,7 @@ const ConvertFund = () => {
               </button>
               {showFromDropdown && (
                 <div className="absolute z-10 mt-2 w-full bg-white border border-slate-200 rounded-lg shadow-lg overflow-hidden">
-                  {currencies.map((currency) => (
+                  {currencyListLocal.map((currency) => (
                     <button
                       key={currency.code}
                       onClick={() => {
@@ -158,9 +144,9 @@ const ConvertFund = () => {
                 onClick={() => setShowToDropdown(!showToDropdown)}
                 className="w-full flex items-center gap-3 rounded-lg border border-lime-600 px-4 py-3 bg-white outline-none focus:ring-2 focus:ring-lime-400"
               >
-                <img src={getFlag(to)} alt="flag" className="w-8 h-8 rounded-full object-cover" />
+                <img src={CURRENCIES[to].flag} alt="flag" className="w-8 h-8 rounded-full object-cover" />
                 <span className="flex-1 text-left font-medium text-slate-700">
-                  {to} - {getCurrencyName(to)}
+                  {to} - {CURRENCIES[to].name}
                 </span>
                 <svg className={`w-5 h-5 transition-transform ${showToDropdown ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -168,7 +154,7 @@ const ConvertFund = () => {
               </button>
               {showToDropdown && (
                 <div className="absolute z-10 mt-2 w-full bg-white border border-slate-200 rounded-lg shadow-lg overflow-hidden">
-                  {currencies.map((currency) => (
+                  {currencyListLocal.map((currency) => (
                     <button
                       key={currency.code}
                       onClick={() => {
