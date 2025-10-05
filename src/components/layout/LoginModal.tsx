@@ -27,7 +27,7 @@ const LoginModal = ({ open, onClose }: LoginModalProps) => {
       <div className="absolute inset-0 flex items-start md:items-center justify-center p-4 pt-8" onClick={onClose}>
         <div
           className={`w-full max-w-md max-h-xl bg-white rounded-4xl shadow-2xl p-8 md:p-12 relative transform transition-all duration-300 ease-out ${enter ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-8'}`}
-          onClick={onClose}
+          onClick={(e) => e.stopPropagation()}
         >
           <div className="flex items-center justify-center gap-3">
             <img src={Logo} alt="logo" className="w-72 h-16" />
