@@ -10,7 +10,6 @@ const LoginModal = ({ open, onClose }: LoginModalProps) => {
   const [enter, setEnter] = useState(false)
   useEffect(() => {
     if (open) {
-      // allow next frame for transition
       const id = requestAnimationFrame(() => setEnter(true))
       return () => cancelAnimationFrame(id)
     } else {
@@ -18,6 +17,7 @@ const LoginModal = ({ open, onClose }: LoginModalProps) => {
     }
   }, [open])
   if (!open) return null
+
   return (
     <div className="fixed inset-0 z-50">
       <div
@@ -32,7 +32,7 @@ const LoginModal = ({ open, onClose }: LoginModalProps) => {
             <img src={Logo} alt="logo" className="w-72 h-16" />
           </div>
           <div className="h-1 bg-lime-500 rounded-full mb-7" />
-          <h2 className="text-2xl font-semibold text-lime-600">Login Account</h2>
+          <h2 className="text-2xl font-medium text-lime-600">Login Account</h2>
           <form className="mt-10 space-y-5">
             <div>
               <input
