@@ -1,4 +1,4 @@
-# EASY EXCHANGE — Landing (React + TypeScript + Vite)
+# EASY EXCHANGE — Landing Page (React + TypeScript + Vite)
 
 Modern, responsive landing page for a currency exchange product. Includes live currency conversion (USD/GBP/EUR) via ExchangeRate-API, feature highlights, and an animated login modal.
 
