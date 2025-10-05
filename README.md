@@ -10,8 +10,8 @@ Modern, responsive landing page for a currency exchange product. Includes live c
 - Organized assets (`assets/logos`, `assets/icons`, `assets/flags`, `assets/illustrations`)
 
 ## Tech Stack
-- React 19, TypeScript, Vite 7
-- Tailwind CSS 4
+- React 19, TypeScript, Vite
+- Tailwind CSS
 - Axios for HTTP
 
 ## Quick Start
