@@ -66,6 +66,5 @@ src/
 - The main content is wrapped with `<main>` in `src/App.tsx` for better accessibility and semantics. Screen readers can jump directly to main content; SEO tools also benefit from clear document landmarks. Visual layout remains the same; only structure is improved.
 
 ## Screenshots
-Place screenshots into `docs/screenshots/` and they will render below.
 
 ![Hero](https://github.com/mustafakaracuha/easy-exchange-landing/blob/main/src/assets/screenshots/App.png)
