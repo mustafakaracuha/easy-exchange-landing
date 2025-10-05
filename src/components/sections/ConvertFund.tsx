@@ -4,15 +4,10 @@ import UkFlag from '../../assets/Uk_flag.svg'
 import ExchangeIcon from '../../assets/exchance_icon.svg'
 import EuFlag from '../../assets/eur_flag.svg'
 
-import { useMemo, useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import { fetchRate } from '../../services/exchange'
 
 type Currency = 'USD' | 'GBP' | 'EUR'
-
-const rates: Record<Currency, number> = {
-  USD: 1,
-  GBP: 0.787962, // 1 USD -> 0.787962 GBP (örnek)
-  EUR: 0.898649, // 1 USD -> 0.898649 EUR (örnek)
-}
 
 const ConvertFund = () => {
   const [amount, setAmount] = useState<number>(10)
@@ -20,19 +15,42 @@ const ConvertFund = () => {
   const [to, setTo] = useState<Currency>('GBP')
   const [showFromDropdown, setShowFromDropdown] = useState(false)
   const [showToDropdown, setShowToDropdown] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [conversionResult, setConversionResult] = useState<number | null>(null)
+  const [baseToTargetRate, setBaseToTargetRate] = useState<number | null>(null)
 
   const fromDropdownRef = useRef<HTMLDivElement>(null)
   const toDropdownRef = useRef<HTMLDivElement>(null)
 
-  const result = useMemo(() => {
-    if (from === to) return amount
-    const usdAmount = amount / rates[from]
-    return +(usdAmount * rates[to]).toFixed(6)
-  }, [amount, from, to])
+  const handleConvert = async () => {
+    setError('')
+    setIsLoading(true)
+    try {
+      const allowed: Currency[] = ['USD', 'GBP', 'EUR']
+      if (!allowed.includes(to)) {
+        throw new Error('Geçersiz hedef para birimi')
+      }
+
+      const rate = await fetchRate(from, to)
+
+      setBaseToTargetRate(rate)
+      const computed = +(amount * rate).toFixed(6)
+      setConversionResult(computed)
+    } catch (e: any) {
+      setConversionResult(null)
+      setBaseToTargetRate(null)
+      setError(e?.message || 'Dönüşüm sırasında bir hata oluştu')
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   const swap = () => {
     setFrom(to)
     setTo(from)
+    setConversionResult(null)
+    setBaseToTargetRate(null)
   }
 
   const currencies = [
@@ -77,7 +95,10 @@ const ConvertFund = () => {
             <input
               type="number"
               value={amount}
-              onChange={(e) => setAmount(Number(e.target.value))}
+              onChange={(e) => {
+                setAmount(Number(e.target.value))
+                setConversionResult(null)
+              }}
               className="w-full rounded-lg border border-slate-500 px-4 py-3 outline-none focus:ring-2 focus:ring-lime-400"
               placeholder="$10.00"
             />
@@ -105,6 +126,8 @@ const ConvertFund = () => {
                       key={currency.code}
                       onClick={() => {
                         setFrom(currency.code as Currency)
+                        setConversionResult(null)
+                        setBaseToTargetRate(null)
                         setShowFromDropdown(false)
                       }}
                       className="w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-50 transition-colors"
@@ -146,6 +169,8 @@ const ConvertFund = () => {
                       key={currency.code}
                       onClick={() => {
                         setTo(currency.code as Currency)
+                        setConversionResult(null)
+                        setBaseToTargetRate(null)
                         setShowToDropdown(false)
                       }}
                       className="w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-50 transition-colors"
@@ -163,22 +188,35 @@ const ConvertFund = () => {
         </div>
 
         <div className="md:justify-self-start mt-10 ml-auto">
-            <button className="inline-flex items-center mr-4 justify-center rounded-xl border cursor-pointer bg-lime-500 text-white hover:bg-lime-600 px-12 py-3 font-semibold transition-colors">
-              Convert
+            <button
+              onClick={handleConvert}
+              disabled={isLoading}
+              className="inline-flex items-center mr-4 justify-center rounded-xl border cursor-pointer bg-lime-500 text-white hover:bg-lime-600 disabled:opacity-60 disabled:cursor-not-allowed px-12 py-3 font-semibold transition-colors"
+            >
+              {isLoading ? 'Converting…' : 'Convert'}
             </button>
           </div>
 
         <div className="mt-12">
-          <p className="text-4xl md:text-3xl font-extrabold text-gray-400">
-            {amount.toFixed(2)} {from === 'USD' ? 'US Dollars' : from === 'GBP' ? 'British Pounds' : 'Euros'} =
-          </p>
-          <p className="mt-4 text-3xl md:text-5xl font-extrabold text-slate-700">
-            {result} {to === 'USD' ? 'US Dollars' : to === 'GBP' ? 'British Pounds' : 'Euros'}
-          </p>
-          <p className="mt-4 text-slate-400 leading-relaxed text-2xl font-medium">
-            1 USD = {rates.GBP} GBP
-            <br />1 GBP = {(1 / rates.GBP).toFixed(5)} USD
-          </p>
+          {error && (
+            <p className="text-red-600 text-xl font-medium">{error}</p>
+          )}
+          {conversionResult !== null && (
+            <>
+              <p className="text-4xl md:text-3xl font-extrabold text-gray-400">
+                {amount.toFixed(2)} {from === 'USD' ? 'US Dollars' : from === 'GBP' ? 'British Pounds' : 'Euros'} =
+              </p>
+              <p className="mt-4 text-3xl md:text-5xl font-extrabold text-slate-700">
+                {conversionResult} {to === 'USD' ? 'US Dollars' : to === 'GBP' ? 'British Pounds' : 'Euros'}
+              </p>
+              {baseToTargetRate !== null && (
+                <p className="mt-4 text-slate-400 leading-relaxed text-2xl font-medium">
+                  1 {from} = {baseToTargetRate} {to}
+                  <br />1 {to} = {(1 / baseToTargetRate).toFixed(6)} {from}
+                </p>
+              )}
+            </>
+          )}
         </div>
       </div>
     </section>
