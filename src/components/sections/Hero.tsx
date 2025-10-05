@@ -2,7 +2,7 @@ import HeroImg from '../../assets/illustrations/hero.svg'
 
 const Hero = () => {
   return (
-    <section className="w-full bg-white min-h-screen flex items-center">
+    <section className="w-full bg-white min-h-[80vh] flex items-start md:items-center pt-6 md:pt-0">
       <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-10 items-center w-full">
         <div className="order-2 md:order-1">
           <h1 className="text-4xl md:text-5xl font-semibold text-slate-700 leading-tight">
