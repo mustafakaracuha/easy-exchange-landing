@@ -86,7 +86,7 @@ const ConvertFund = () => {
       <div className="max-w-7xl mx-auto px-4 py-16">
         <div className="flex items-center gap-3">
           <img src={ConvertIcon} alt="convert" className="w-12 h-12" />
-          <h2 className="text-2xl md:text-3xl font-semibold text-slate-700">Convert Fund</h2>
+          <h2 className="text-2xl md:text-2xl font-semibold text-slate-700">Convert Fund</h2>
         </div>
 
         <div className="mt-8 grid grid-cols-1 md:grid-cols-[1fr_1fr_auto_1fr_auto] items-end gap-6">
