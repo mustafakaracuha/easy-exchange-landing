@@ -12,7 +12,7 @@ Modern, responsive landing page for a currency exchange product. Includes live c
 ## Tech Stack
 - React 19, TypeScript, Vite
 - Tailwind CSS
-- Axios for HTTP
+- Axios
 
 ## Quick Start
 1) Install dependencies
