@@ -10,7 +10,7 @@ import type { Currency } from '../../types/exchange'
 
 
 const ConvertFund = () => {
-  const [amount, setAmount] = useState<number>(10)
+  const [amount, setAmount] = useState<string>('10')
   const [from, setFrom] = useState<Currency>('USD')
   const [to, setTo] = useState<Currency>('GBP')
   const [showFromDropdown, setShowFromDropdown] = useState(false)
@@ -27,6 +27,10 @@ const ConvertFund = () => {
     setError('')
     setIsLoading(true)
     try {
+      const numericAmount = parseFloat(amount)
+      if (isNaN(numericAmount) || numericAmount < 0) {
+        throw new Error('Lütfen geçerli bir tutar girin')
+      }
       const allowed: Currency[] = ['USD', 'GBP', 'EUR']
       if (!allowed.includes(to)) {
         throw new Error('Geçersiz hedef para birimi')
@@ -35,7 +39,7 @@ const ConvertFund = () => {
       const rate = await fetchRate(from, to)
 
       setBaseToTargetRate(rate)
-      const computed = +(amount * rate).toFixed(6)
+      const computed = +(numericAmount * rate).toFixed(6)
       setConversionResult(computed)
     } catch (e: any) {
       setConversionResult(null)
@@ -96,7 +100,7 @@ const ConvertFund = () => {
               type="number"
               value={amount}
               onChange={(e) => {
-                setAmount(Number(e.target.value))
+                setAmount(e.target.value)
                 setConversionResult(null)
               }}
               className="w-full rounded-lg border border-slate-500 px-4 py-3 outline-none focus:ring-2 focus:ring-lime-400"
@@ -203,15 +207,15 @@ const ConvertFund = () => {
           {conversionResult !== null && (
             <div className="transition-all duration-300 ease-out opacity-100 translate-y-0 animate-[fadeInUp_300ms_ease-out]">
               <p className="text-4xl md:text-3xl font-extrabold text-gray-400">
-                {amount.toFixed(2)} {from === 'USD' ? 'US Dollars' : from === 'GBP' ? 'British Pounds' : 'Euros'} =
+                {(amount === '' ? '0.00' : Number(amount).toFixed(2))} {from === 'USD' ? 'US Dollars' : from === 'GBP' ? 'British Pounds' : 'Euros'} =
               </p>
               <p className="mt-4 text-3xl md:text-5xl font-extrabold text-slate-700">
                 {conversionResult} {to === 'USD' ? 'US Dollars' : to === 'GBP' ? 'British Pounds' : 'Euros'}
               </p>
               {baseToTargetRate !== null && (
                 <p className="mt-4 text-slate-400 leading-relaxed text-2xl font-medium">
-                  1 {from} = {baseToTargetRate} {to}
-                  <br />1 {to} = {(1 / baseToTargetRate).toFixed(6)} {from}
+                  1 {from} = {baseToTargetRate.toFixed(6)} {to}
+                  <br />1 {to} = {(1 / baseToTargetRate).toFixed(5)} {from}
                 </p>
               )}
             </div>
