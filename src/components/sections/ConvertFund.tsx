@@ -29,11 +29,11 @@ const ConvertFund = () => {
     try {
       const numericAmount = parseFloat(amount)
       if (isNaN(numericAmount) || numericAmount < 0) {
-        throw new Error('Lütfen geçerli bir tutar girin')
+        throw new Error('Please enter a valid amount')
       }
       const allowed: Currency[] = ['USD', 'GBP', 'EUR']
       if (!allowed.includes(to)) {
-        throw new Error('Geçersiz hedef para birimi')
+        throw new Error('Invalid target currency')
       }
 
       const rate = await fetchRate(from, to)
@@ -44,7 +44,7 @@ const ConvertFund = () => {
     } catch (e: any) {
       setConversionResult(null)
       setBaseToTargetRate(null)
-      setError(e?.message || 'Dönüşüm sırasında bir hata oluştu')
+      setError(e?.message || 'An error occurred during conversion')
     } finally {
       setIsLoading(false)
     }
