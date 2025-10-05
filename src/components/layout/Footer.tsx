@@ -25,7 +25,7 @@ const Footer = () => {
       <div className="border-t border-slate-800">
         <div className="max-w-7xl mx-auto px-4 py-6 text-sm text-slate-500 flex items-center justify-between">
           <span>© {new Date().getFullYear()}</span>
-          <span>Made by <a href="https://github.com/kodluyoruz" className="text-lime-500 hover:text-lime-600 transition-colors">MUSTAFA KARAÇUHA</a></span>
+          <span>Made by <a href="https://github.com/mustafakaracuha" className="text-lime-500 hover:text-lime-600 transition-colors">MUSTAFA KARAÇUHA</a></span>
         </div>
       </div>
     </footer>
