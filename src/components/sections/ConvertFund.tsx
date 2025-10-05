@@ -201,7 +201,7 @@ const ConvertFund = () => {
             <p className="text-red-600 text-xl font-medium">{error}</p>
           )}
           {conversionResult !== null && (
-            <>
+            <div className="transition-all duration-300 ease-out opacity-100 translate-y-0 animate-[fadeInUp_300ms_ease-out]">
               <p className="text-4xl md:text-3xl font-extrabold text-gray-400">
                 {amount.toFixed(2)} {from === 'USD' ? 'US Dollars' : from === 'GBP' ? 'British Pounds' : 'Euros'} =
               </p>
@@ -214,7 +214,7 @@ const ConvertFund = () => {
                   <br />1 {to} = {(1 / baseToTargetRate).toFixed(6)} {from}
                 </p>
               )}
-            </>
+            </div>
           )}
       </div>
     </section>
