@@ -69,5 +69,3 @@ src/
 Place screenshots into `docs/screenshots/` and they will render below.
 
 ![Hero](docs/screenshots/hero.png)
-![Converter](docs/screenshots/converter.png)
-![Login Modal](docs/screenshots/login-modal.png)
