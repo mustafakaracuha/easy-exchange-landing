@@ -68,4 +68,4 @@ src/
 ## Screenshots
 Place screenshots into `docs/screenshots/` and they will render below.
 
-![Hero](docs/screenshots/hero.png)
+![Hero](https://github.com/mustafakaracuha/easy-exchange-landing/blob/main/src/assets/screenshots/App.png)
