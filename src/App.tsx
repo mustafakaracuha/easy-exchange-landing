@@ -11,9 +11,11 @@ function App() {
   return (
     <>
       <Header onLoginClick={() => setIsLoginOpen(true)} />
-      <Hero />
-      <Features />
-      <ConvertFund />
+      <main>
+        <Hero />
+        <Features />
+        <ConvertFund />
+      </main>
       <Footer />
       <LoginModal open={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
     </>
