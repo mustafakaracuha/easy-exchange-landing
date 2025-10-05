@@ -1,8 +1,8 @@
-import ConvertIcon from '../../assets/coonvert_icon.svg'
-import UsFlag from '../../assets/amerikan_flag.svg'
-import UkFlag from '../../assets/Uk_flag.svg'
-import ExchangeIcon from '../../assets/exchance_icon.svg'
-import EuFlag from '../../assets/eur_flag.svg'
+import ConvertIcon from '../../assets/icons/convert.svg'
+import UsFlag from '../../assets/flags/us.svg'
+import UkFlag from '../../assets/flags/gb.svg'
+import ExchangeIcon from '../../assets/icons/exchange.svg'
+import EuFlag from '../../assets/flags/eu.svg'
 
 import { useState, useEffect, useRef } from 'react'
 import { fetchRate } from '../../services/exchange'
@@ -197,7 +197,6 @@ const ConvertFund = () => {
             </button>
           </div>
 
-        <div className="mt-12">
           {error && (
             <p className="text-red-600 text-xl font-medium">{error}</p>
           )}
@@ -217,7 +216,6 @@ const ConvertFund = () => {
               )}
             </>
           )}
-        </div>
       </div>
     </section>
   )

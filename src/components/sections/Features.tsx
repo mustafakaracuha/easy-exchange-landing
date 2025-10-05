@@ -1,6 +1,6 @@
-import Secure from '../../assets/SECURE.svg'
-import Accessible from '../../assets/ACCESSIBLE.svg'
-import Fast from '../../assets/FAST.svg'
+import Secure from '../../assets/icons/secure.svg'
+import Accessible from '../../assets/icons/accessible.svg'
+import Fast from '../../assets/icons/fast.svg'
 
 const features = [
   {
