@@ -30,13 +30,13 @@ VITE_APP_API_KEY=YOUR_EXCHANGERATE_API_KEY
 npm run dev
 ```
 
-## 🔧 Available Scripts
+## Available Scripts
 - `npm run dev` — start Vite dev server
 - `npm run build` — type-check and build for production
 - `npm run preview` — preview production build
 - `npm run lint` — run ESLint
 
-## 🔗 API
+## API
 Exchange rates fetched from `https://v6.exchangerate-api.com/v6/{API_KEY}/latest/{BASE}`. See docs: [ExchangeRate-API Docs](https://www.exchangerate-api.com/docs).
 
 ## Project Structure (key paths)
