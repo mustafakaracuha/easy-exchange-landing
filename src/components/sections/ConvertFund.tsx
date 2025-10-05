@@ -104,7 +104,7 @@ const ConvertFund = () => {
                 setConversionResult(null)
               }}
               className="w-full rounded-lg border border-slate-500 px-4 py-3 outline-none focus:ring-2 focus:ring-lime-400"
-              placeholder="$10.00"
+              placeholder="10.00"
             />
           </div>
 
