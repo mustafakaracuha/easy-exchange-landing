@@ -118,9 +118,9 @@ const ConvertFund = () => {
                         setFrom(currency.code as Currency)
                         setConversionResult(null)
                         setBaseToTargetRate(null)
-                        setShowFromDropdown(false)
+                         setShowFromDropdown(false)
                       }}
-                      className="w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-50 transition-colors"
+                      className="w-full flex items-center gap-3 px-4 py-3 border-b border-slate-200 hover:bg-slate-50 transition-colors"
                     >
                       <img src={currency.flag} alt={currency.name} className="w-8 h-8 rounded-full object-cover" />
                       <span className="font-medium text-slate-700">
@@ -163,7 +163,7 @@ const ConvertFund = () => {
                         setBaseToTargetRate(null)
                         setShowToDropdown(false)
                       }}
-                      className="w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-50 transition-colors"
+                      className="w-full flex items-center gap-3 px-4 py-3 border-b border-slate-200 hover:bg-slate-50 transition-colors"
                     >
                       <img src={currency.flag} alt={currency.name} className="w-8 h-8 rounded-full object-cover" />
                       <span className="font-medium text-slate-700">
